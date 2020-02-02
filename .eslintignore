@@ -1,0 +1,3 @@
+webpack.*.js
+/src/server/**/*.*
+app.js
