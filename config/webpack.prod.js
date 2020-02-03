@@ -1,25 +1,25 @@
 /* eslint-disable */
-const path = require('path');
-const webpack = require('webpack');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const BrotliPlugin = require('brotli-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const BrotliPlugin = require("brotli-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
-    main: ['./src/index.js']
+    main: ["./src/index.js"]
   },
-  mode: 'production',
+  mode: "production",
   output: {
-    filename: '[name]-bundle.js',
-    chunkFilename: '[name]-chunk.js',
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/'
+    filename: "[name]-bundle.js",
+    chunkFilename: "[name]-chunk.js",
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: "/"
   },
   module: {
     rules: [
@@ -28,7 +28,7 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader'
+            loader: "babel-loader"
           }
         ]
       },
@@ -37,10 +37,10 @@ module.exports = {
         use: [
           { loader: MiniCSSExtractPlugin.loader },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[name]__[local]--[hash:base64:8]'
+                localIdentName: "[name]__[local]--[hash:base64:8]"
               }
             }
           }
@@ -51,16 +51,16 @@ module.exports = {
         use: [
           { loader: MiniCSSExtractPlugin.loader },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[name]__[local]--[hash:base64:8]'
+                localIdentName: "[name]__[local]--[hash:base64:8]"
               }
             }
           },
-          { loader: 'postcss-loader' },
+          { loader: "postcss-loader" },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               modules: true
             }
@@ -69,22 +69,22 @@ module.exports = {
       },
       {
         test: /\.ico$/,
-        loader: 'file-loader?name=[name].[ext]'
+        loader: "file-loader?name=[name].[ext]"
       },
       {
         test: /\.(woff(2)?|ttf)$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: 'fonts/[name].[ext]'
+          name: "fonts/[name].[ext]"
         }
       },
       {
         test: /\.(jpg|png|svg)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: 'images/[name].[ext]'
+              name: "images/[name].[ext]"
             }
           }
         ]
@@ -93,7 +93,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader'
+            loader: "html-loader"
           }
         ]
       },
@@ -101,9 +101,9 @@ module.exports = {
         test: /\.hbs$/,
         use: [
           {
-            loader: 'handlebars-loader',
+            loader: "handlebars-loader",
             query: {
-              inlineRequires: '/images/'
+              inlineRequires: "/images/"
             }
           }
         ]
@@ -112,7 +112,7 @@ module.exports = {
         test: /\.md$/,
         use: [
           {
-            loader: 'markdown-with-front-matter-loader'
+            loader: "markdown-with-front-matter-loader"
           }
         ]
       }
@@ -122,21 +122,22 @@ module.exports = {
     new CleanWebpackPlugin(),
     new OptimizeCssAssetsPlugin(),
     new MiniCSSExtractPlugin({
-      filename: '[name]-[contenthash].css'
+      filename: "[name]-[contenthash].css"
     }),
     new HTMLWebpackPlugin({
-      template: './src/index.hbs',
+      template: "./src/index.hbs",
       title: "Jeremy's Camp"
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      },
+      WEBPACK: true
     }),
     new MinifyPlugin(),
     new UglifyJsPlugin(),
     new CompressionPlugin({
-      algorithm: 'gzip',
+      algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/
     }),
     new BrotliPlugin({
@@ -144,6 +145,6 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['.js', '.jsx', '.sass']
+    extensions: [".js", ".jsx", ".sass"]
   }
 };
