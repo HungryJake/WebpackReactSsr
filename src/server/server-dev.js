@@ -1,58 +1,46 @@
-import express from "express";
+const express = require("express");
 const server = express();
-import path from "path";
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import AppRoot from "../components/AppRoot";
+const helmet = require("helmet");
+const db = require("./database");
+const environment = process.env.NODE_ENV || "development";
 
-const isProd = process.env.NODE_ENV === "production";
-if (!isProd) {
+// production env
+if (environment === "production") {
+  const expressStaticGzip = require("express-static-gzip");
+  server.use(
+    expressStaticGzip("dist", {
+      orderPreference: ["br", "gz"],
+      enableBrotli: true,
+      setHeaders: function(res, path) {
+        res.setHeader("Cache-Control", "public, max-age=31536000");
+      }
+    })
+  );
+}
+
+// development env
+if (environment === "development") {
   const webpack = require("webpack");
-  const config = require("../../config/webpack.dev.js");
+  const config = require("../../config/webpack.dev");
   const compiler = webpack(config);
-
   const webpackDevMiddleware = require("webpack-dev-middleware")(
     compiler,
     config.devServer
   );
-
   const webpackHotMiddlware = require("webpack-hot-middleware")(
     compiler,
     config.devServer
   );
-
+  const staticMiddleware = express.static("dist");
   server.use(webpackDevMiddleware);
   server.use(webpackHotMiddlware);
-  console.log("Middleware enabled");
+  server.use(staticMiddleware);
 }
 
-const expressStaticGzip = require("express-static-gzip");
-server.use(
-  expressStaticGzip("dist", {
-    enableBrotli: true
-  })
-);
+server.use(helmet());
+server.use(express.json());
 
-server.get("*", (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <link href="main.css" rel="stylesheet" />
-      </head>
-      <body>
-        <div id="react-root">
-          ${ReactDOMServer.renderToString(<AppRoot />)}
-        </div>
-        <script src="vendor-bundle.js"></script>
-        <script src="main-bundle.js"></script>
-      </body>
-    </html>
-  `);
-});
-
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3030;
 server.listen(PORT, () => {
-  console.log(
-    `Server listening on http://localhost:${PORT} in ${process.env.NODE_ENV}`
-  );
+  console.log(`Server listening on http://localhost:${PORT}`);
 });

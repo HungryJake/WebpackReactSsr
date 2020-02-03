@@ -1,17 +1,16 @@
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+
 const express = require("express");
 const server = express();
 
 server.disable("x-powered-by");
-// server.use(express.static("dist"));
+server.use(express.static("dist"));
 
-const expressStaticGzip = require("express-static-gzip");
-server.use(expressStaticGzip("dist", {
-  orderPreference: ['br', 'gz'],
-  enableBrotli: true,
-  setHeaders: function (res, path) {
-    res.setHeader("Cache-Control", "public, max-age=31536000");
-  }
-}));
+server.get("*", (req, res) => {
+  const html = ReactDOMServer.renderToString(<div>Hello world SSR!!!</div>);
+  res.send(html);
+});
 
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
