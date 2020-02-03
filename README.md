@@ -1,2 +1,4 @@
 Webpack with React starter
-Client side rendering
+Server side rendering
+
+Work in progress
