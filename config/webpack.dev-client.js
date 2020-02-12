@@ -1,31 +1,31 @@
 /* eslint-disable */
-const path = require('path');
-const webpack = require('webpack');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  name: 'client',
+  name: "client",
   entry: {
     main: [
-      'babel-runtime/regenerator',
-      'webpack-hot-middleware/client?reload=true',
-      './src/index.js'
+      "babel-runtime/regenerator",
+      "webpack-hot-middleware/client?reload=true",
+      "./src/index.js"
     ]
   },
-  mode: 'development',
+  mode: "development",
   output: {
-    filename: '[name]-bundle.js',
-    path: path.resolve(__dirname, '../dist'),
-    publicPath: '/'
+    filename: "[name]-bundle.js",
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: "/"
   },
   devServer: {
-    contentBase: 'dist',
+    contentBase: "dist",
     overlay: true,
     stats: {
       colors: true
     }
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -34,24 +34,24 @@ module.exports = {
         include: /src/,
         use: [
           {
-            loader: 'babel-loader'
+            loader: "babel-loader"
           }
         ]
       },
       {
         test: /\.(js|jsx)$/,
-        use: 'react-hot-loader/webpack',
+        use: "react-hot-loader/webpack",
         include: /node_modules/
       },
       {
         test: /\.css$/,
         use: [
-          { loader: 'style-loader' },
+          { loader: "style-loader" },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[name]__[local]--[hash:base64:8]'
+                localIdentName: "[name]__[local]--[hash:base64:8]"
               }
             }
           }
@@ -60,18 +60,18 @@ module.exports = {
       {
         test: /\.sass$/,
         use: [
-          { loader: 'style-loader' },
+          { loader: "style-loader" },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[name]__[local]--[hash:base64:8]'
+                localIdentName: "[name]__[local]--[hash:base64:8]"
               }
             }
           },
-          { loader: 'postcss-loader' },
+          { loader: "postcss-loader" },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               modules: true
             }
@@ -80,22 +80,22 @@ module.exports = {
       },
       {
         test: /\.ico$/,
-        loader: 'file-loader?name=[name].[ext]'
+        loader: "file-loader?name=[name].[ext]"
       },
       {
         test: /\.(woff(2)?|ttf)$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: 'fonts/[name].[ext]'
+          name: "fonts/[name].[ext]"
         }
       },
       {
         test: /\.(jpg|png|svg)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: 'images/[name].[ext]'
+              name: "images/[name].[ext]"
             }
           }
         ]
@@ -104,7 +104,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader'
+            loader: "html-loader"
           }
         ]
       },
@@ -112,9 +112,9 @@ module.exports = {
         test: /\.hbs$/,
         use: [
           {
-            loader: 'handlebars-loader',
+            loader: "handlebars-loader",
             query: {
-              inlineRequires: '/images/'
+              inlineRequires: "/images/"
             }
           }
         ]
@@ -123,29 +123,24 @@ module.exports = {
         test: /\.md$/,
         use: [
           {
-            loader: 'markdown-with-front-matter-loader'
+            loader: "markdown-with-front-matter-loader"
           }
         ]
       }
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("development"),
+        WEBPACK: true
+      }
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new HTMLWebpackPlugin({
-      template: './src/index.hbs',
-      title: "Jeremy's Camp"
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      },
-      WEBPACK: true
+      template: "./src/index.hbs",
+      inject: true,
+      title: "Link's Journal"
     })
-  ],
-  resolve: {
-    extensions: ['.js', '.jsx', '.sass'],
-    alias: {
-      'react-dom': '@hot-loader/react-dom'
-    }
-  }
+  ]
 };

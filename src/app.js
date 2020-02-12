@@ -1,21 +1,21 @@
 /* eslint-disable */
-import { AppContainer } from 'react-hot-loader';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Main from './components/Main/Main';
+import { AppContainer } from "react-hot-loader";
+import React from "react";
+import ReactDOM from "react-dom";
+import AppRoot from "./components/AppRoot";
 
 function render() {
   ReactDOM.render(
     <AppContainer>
-      <Main />
+      <AppRoot />
     </AppContainer>,
-    document.getElementById('app')
+    document.getElementById("app")
   );
 }
-render(Main);
+render(AppRoot);
 
 if (module.hot) {
-  module.hot.accept('./components/Main/Main.jsx', () => {
-    render(require('./components/Main/Main.jsx').default);
+  module.hot.accept("./components/AppRoot/index.js", () => {
+    render(require("./components/AppRoot/index.js").default);
   });
 }

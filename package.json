@@ -11,13 +11,8 @@
   "author": "Jake Lu",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config=config/webpack.prod.js",
-    "build:dev": "webpack --config=config/webpack.dev.js",
-    "build:server": "BABEL_ENV=production webpack --config=config/webpack.server.js --env.NODE_ENV=production",
-    "dev": "node --inspect build/server-bundle.js",
-    "prod": "NODE_ENV=production node build/server-bundle.js",
-    "serve": "node src/server/server.js",
-    "start": "webpack-dev-server --config=config/webpack.dev.js"
+    "prod": "NODE_ENV=production node src/server/main.js",
+    "dev": "nodemon --watch src/server --watch config --inspect src/server/main"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -60,6 +55,7 @@
     "express": "^4.17.1",
     "express-static-gzip": "^2.0.5",
     "express-validator": "^6.3.0",
+    "extract-css-chunks-webpack-plugin": "^4.7.4",
     "extract-loader": "^3.1.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^4.2.0",
@@ -93,6 +89,7 @@
     "sass-loader": "^7.3.1",
     "style-loader": "^0.23.1",
     "stylelint": "^13.0.0",
+    "stylelint-config-prettier": "^8.0.1",
     "terser-webpack-plugin": "^2.3.0",
     "thunk": "0.0.1",
     "uglifyjs-webpack-plugin": "^2.2.0",

@@ -1,58 +1,45 @@
 import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import AppRoot from "../components/AppRoot";
-
+const expressStaticGzip = require("express-static-gzip");
 const express = require("express");
 const server = express();
+import webpack from "webpack";
 
-// TODO use helmet
-server.disable("x-powered-by");
+import configDevClient from "../../config/webpack.dev-client.js";
+import configDevServer from "../../config/webpack.dev-server.js";
+import configProdClient from "../../config/webpack.prod-client.js";
+import configProdServer from "../../config/webpack.prod-server.js";
 
 const isProd = process.env.NODE_ENV === "production";
-if (!isProd) {
-  const webpack = require("webpack");
-  const config = require("../../config/webpack.dev.js");
-  const compiler = webpack(config);
+const isDev = !isProd;
+
+if (isDev) {
+  const compiler = webpack([configDevClient, configDevServer]);
+
+  const clientCompiler = compiler.compilers[0];
+  const serverCompiler = compiler.compilers[1];
+
   const webpackDevMiddleware = require("webpack-dev-middleware")(
     compiler,
-    config.devServer
+    configDevClient.devServer
   );
   const webpackHotMiddlware = require("webpack-hot-middleware")(
-    compiler,
-    config.devServer
+    clientCompiler,
+    configDevClient.devServer
   );
   server.use(webpackDevMiddleware);
   server.use(webpackHotMiddlware);
   console.log("Middleware enabled");
-  server.use(express.static(path.resolve(__dirname, "dist")));
+} else {
+  const render = require("./render.js");
+  server.use(
+    expressStaticGzip("dist", {
+      enableBrotli: true
+    })
+  );
+  server.use(render());
 }
-
-server.use(express.static("dist"));
-const expressStaticGzip = require("express-static-gzip");
-server.use(
-  expressStaticGzip("dist", {
-    enableBrotli: true
-  })
-);
-server.get("*", (req, res) => {
-  res.send(`
-    <html>
-      <head>
-      </head>
-      <body>
-        <div id="react-root">
-          ${ReactDOMServer.renderToString(<AppRoot />)}
-        </div>
-      </body>
-    </html>
-  `);
-});
-
-server.get("*", (req, res) => {
-  const html = ReactDOMServer.renderToString();
-  res.send(html);
-});
 
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
