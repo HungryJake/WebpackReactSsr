@@ -1,20 +1,17 @@
 /* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   name: "client",
   entry: {
     vendor: ["react", "react-dom"],
-    main: ["./src/index.js"]
+    main: ["./src/main.js"]
   },
   mode: "production",
   output: {
@@ -25,12 +22,10 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      automaticNameDelimiter: "-",
       cacheGroups: {
         vendor: {
           name: "vendor",
           chunks: "initial",
-          test: /[\\/]node_modules[\\/]/,
           minChunks: 2
         }
       }
@@ -134,15 +129,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new MiniCSSExtractPlugin(),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.css$/g,
       cssProcessor: require("cssnano"),
       cssProcessorOptions: { discardComments: { removeAll: true } },
       canPrint: true
-    }),
-    new MiniCSSExtractPlugin({
-      filename: "[name]-[contenthash].css"
     }),
     new webpack.DefinePlugin({
       "process.env": {
@@ -150,14 +142,10 @@ module.exports = {
         WEBPACK: true
       }
     }),
-    new MinifyPlugin(),
     new UglifyJsPlugin(),
     new CompressionPlugin({
-      algorithm: "gzip",
-      test: /\.js$|\.css$|\.html$/
+      algorithm: "gzip"
     }),
-    new BrotliPlugin({
-      test: /\.js$|\.css$|\.html$/
-    })
+    new BrotliPlugin()
   ]
 };

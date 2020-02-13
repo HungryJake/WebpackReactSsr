@@ -1,15 +1,17 @@
 /* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   name: "client",
   entry: {
+    vendor: ["react", "react-dom"],
     main: [
+      "react-hot-loader/patch",
       "babel-runtime/regenerator",
       "webpack-hot-middleware/client?reload=true",
-      "./src/index.js"
+      "./src/main.js"
     ]
   },
   mode: "development",
@@ -26,6 +28,11 @@ module.exports = {
     }
   },
   devtool: "source-map",
+  optimization: {
+    splitChunks: {
+      name: "vendor"
+    }
+  },
   module: {
     rules: [
       {
@@ -45,17 +52,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          { loader: "style-loader" },
-          {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[name]__[local]--[hash:base64:8]"
-              }
-            }
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: {
+            loader: "css-loader"
           }
-        ]
+        })
       },
       {
         test: /\.sass$/,
@@ -130,17 +132,13 @@ module.exports = {
     ]
   },
   plugins: [
+    new ExtractTextPlugin("[name].css"),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("development"),
         WEBPACK: true
       }
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new HTMLWebpackPlugin({
-      template: "./src/index.hbs",
-      inject: true,
-      title: "Link's Journal"
-    })
+    new webpack.HotModuleReplacementPlugin()
   ]
 };

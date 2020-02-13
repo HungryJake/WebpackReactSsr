@@ -1,10 +1,8 @@
-import path from "path";
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-const expressStaticGzip = require("express-static-gzip");
 const express = require("express");
 const server = express();
+const expressStaticGzip = require("express-static-gzip");
 import webpack from "webpack";
+import webpackHotServerMiddleware from "webpack-hot-server-middleware";
 
 import configDevClient from "../../config/webpack.dev-client.js";
 import configDevServer from "../../config/webpack.dev-server.js";
@@ -24,21 +22,30 @@ if (isDev) {
     compiler,
     configDevClient.devServer
   );
-  const webpackHotMiddlware = require("webpack-hot-middleware")(
+  const webpackHotMiddleware = require("webpack-hot-middleware")(
     clientCompiler,
     configDevClient.devServer
   );
   server.use(webpackDevMiddleware);
-  server.use(webpackHotMiddlware);
+  server.use(webpackHotMiddleware);
+  server.use(webpackHotServerMiddleware(compiler));
   console.log("Middleware enabled");
 } else {
-  const render = require("./render.js");
-  server.use(
-    expressStaticGzip("dist", {
-      enableBrotli: true
-    })
-  );
-  server.use(render());
+  webpack([configProdClient, configProdServer]).run((err, stats) => {
+    if (err) {
+      console.error(err);
+    }
+    const render = require("../../build/prod-server-bundle.js").default;
+    server.use(
+      expressStaticGzip("dist", {
+        enableBrotli: true
+      })
+    );
+    server.use(render());
+    if (stats) {
+      console.log("production ready");
+    }
+  });
 }
 
 const PORT = process.env.PORT || 8080;

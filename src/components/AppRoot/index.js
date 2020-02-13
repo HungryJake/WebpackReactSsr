@@ -18,7 +18,7 @@ export default class extends React.Component {
           className="content"
           dangerouslySetInnerHTML={{ __html: MarkdownData.__content }}
         />
-        <h1> I love you, God.</h1>
+        <h1> I love you, God.!</h1>
       </div>
     );
   }

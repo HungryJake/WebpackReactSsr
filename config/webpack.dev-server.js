@@ -7,13 +7,12 @@ module.exports = {
   name: "server",
   target: "node",
   externals: nodeExternals(),
-  entry: {
-    server: ["./src/server/render.js"]
-  },
+  entry: "./src/server/render.js",
   mode: "development",
   output: {
-    filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../build")
+    filename: "dev-server-bundle.js",
+    path: path.resolve(__dirname, "../build"),
+    libraryTarget: "commonjs2"
   },
   module: {
     rules: [
@@ -31,10 +30,7 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
           use: {
-            loader: "css-loader",
-            options: {
-              minimize: true
-            }
+            loader: "css-loader"
           }
         })
       },
@@ -61,6 +57,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new ExtractTextPlugin("[name].css"),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("development")

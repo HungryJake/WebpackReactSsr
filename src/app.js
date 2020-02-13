@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import AppRoot from "./components/AppRoot";
 
 function render() {
-  ReactDOM.render(
+  ReactDOM.hydrate(
     <AppContainer>
       <AppRoot />
     </AppContainer>,

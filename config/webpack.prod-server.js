@@ -7,13 +7,12 @@ module.exports = {
   name: "server",
   target: "node",
   externals: nodeExternals(),
-  entry: {
-    server: ["./src/server/render.js"]
-  },
+  entry: "./src/server/render.js",
   mode: "production",
   output: {
-    filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../build")
+    filename: "prod-server-bundle.js",
+    path: path.resolve(__dirname, "../build"),
+    libraryTarget: "commonjs2"
   },
   module: {
     rules: [
@@ -33,7 +32,9 @@ module.exports = {
           use: {
             loader: "css-loader",
             options: {
-              minimize: true
+              modules: {
+                localIdentName: "[name]__[local]--[hash:base64:8]"
+              }
             }
           }
         })
