@@ -1,6 +1,7 @@
 import React from "react";
-import MarkdownData from "../../data/post.md";
-import imagePath from "../../assets/images/link.jpg";
+import { BrowserRouter as Router } from "react-router-dom";
+import Routes from "../Routes";
+import "../nav.css";
 
 export default class extends React.Component {
   constructor(props) {
@@ -10,16 +11,9 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div className="profile">
-        <div className="content" />
-        <img src={imagePath} />
-        <h1>{MarkdownData.title}</h1>
-        <div
-          className="content"
-          dangerouslySetInnerHTML={{ __html: MarkdownData.__content }}
-        />
-        <h1> I love you, God.!</h1>
-      </div>
+      <Router>
+        <Routes />
+      </Router>
     );
   }
 }

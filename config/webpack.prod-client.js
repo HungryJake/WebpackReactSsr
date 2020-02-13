@@ -22,13 +22,7 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: "vendor",
-          chunks: "initial",
-          minChunks: 2
-        }
-      }
+      name: "vendor"
     }
   },
   module: {
@@ -47,12 +41,7 @@ module.exports = {
         use: [
           { loader: MiniCSSExtractPlugin.loader },
           {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[name]__[local]--[hash:base64:8]"
-              }
-            }
+            loader: "css-loader"
           }
         ]
       },
