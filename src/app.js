@@ -16,7 +16,7 @@ function render() {
 render(AppRoot);
 
 if (module.hot) {
-  module.hot.accept("./components/AppRoot/index.js", () => {
-    render(require("./components/AppRoot/index.js").default);
+  module.hot.accept("./components/AppRoot.js", () => {
+    render(require("./components/AppRoot.js").default);
   });
 }
