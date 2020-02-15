@@ -32,13 +32,23 @@ module.exports = {
         }
       },
       {
-        test: /\.jpg$/,
+        test: /\.ico$/,
+        loader: "file-loader?name=[name].[ext]"
+      },
+      {
+        test: /\.(woff(2)?|ttf)$/,
+        loader: "file-loader",
+        options: {
+          name: "fonts/[name].[ext]"
+        }
+      },
+      {
+        test: /\.(jpg|png|svg|gif)$/,
         use: [
           {
             loader: "file-loader",
             options: {
-              name: "/images/[name].[ext]",
-              emitFile: false
+              name: "/images/[name].[ext]"
             }
           }
         ]

@@ -6,7 +6,7 @@ import AppRoot from "./components/AppRoot";
 
 function render() {
   const renderMethod = !!module.hot ? ReactDOM.render : ReactDOM.hydrate;
-  renderMethod(
+  ReactDOM.hydrate(
     <AppContainer>
       <AppRoot />
     </AppContainer>,
