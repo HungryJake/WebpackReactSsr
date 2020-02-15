@@ -16,14 +16,9 @@ module.exports = {
   mode: "production",
   output: {
     filename: "[name]-bundle.js",
-    chunkFilename: "[name]-chunk.js",
+    chunkFilename: "[name].js",
     path: path.resolve(__dirname, "../dist"),
     publicPath: "/"
-  },
-  optimization: {
-    splitChunks: {
-      name: "vendor"
-    }
   },
   module: {
     rules: [
