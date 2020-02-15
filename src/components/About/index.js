@@ -5,14 +5,12 @@ import imagePath from "../../assets/images/link.jpg";
 export default function() {
   return (
     <div className="profile">
-      <div className="content" />
       <img src={imagePath} />
       <h1>{MarkdownData.title}</h1>
       <div
         className="content"
         dangerouslySetInnerHTML={{ __html: MarkdownData.__content }}
       />
-      <h1> I love you, God.!</h1>
     </div>
   );
 }

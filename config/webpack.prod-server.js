@@ -62,5 +62,11 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     })
-  ]
+  ],
+  resolve: {
+    extensions: [".js", ".jsx", ".sass"],
+    alias: {
+      "react-dom": "@hot-loader/react-dom"
+    }
+  }
 };

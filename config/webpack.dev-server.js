@@ -63,5 +63,11 @@ module.exports = {
         NODE_ENV: JSON.stringify("development")
       }
     })
-  ]
+  ],
+  resolve: {
+    extensions: [".js", ".jsx", ".sass"],
+    alias: {
+      "react-dom": "@hot-loader/react-dom"
+    }
+  }
 };

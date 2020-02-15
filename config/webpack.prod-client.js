@@ -136,5 +136,11 @@ module.exports = {
       algorithm: "gzip"
     }),
     new BrotliPlugin()
-  ]
+  ],
+  resolve: {
+    extensions: [".js", ".jsx", ".sass"],
+    alias: {
+      "react-dom": "@hot-loader/react-dom"
+    }
+  }
 };
