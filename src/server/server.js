@@ -35,13 +35,19 @@ if (isDev) {
     if (err) {
       console.error(err);
     }
+    console.log(
+      stats.toString({
+        colors: true
+      })
+    );
+    const clientStats = stats.toJson().children[0];
     const render = require("../../build/prod-server-bundle.js").default;
     server.use(
       expressStaticGzip("dist", {
         enableBrotli: true
       })
     );
-    server.use(render());
+    server.use(render({ clientStats }));
     if (stats) {
       console.log("production ready");
     }

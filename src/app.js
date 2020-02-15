@@ -5,7 +5,8 @@ import ReactDOM from "react-dom";
 import AppRoot from "./components/AppRoot";
 
 function render() {
-  ReactDOM.hydrate(
+  const renderMethod = !!module.hot ? ReactDOM.render : ReactDOM.hydrate;
+  renderMethod(
     <AppContainer>
       <AppRoot />
     </AppContainer>,

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
-import Gallery from "./Gallery";
-import About from "./About";
-import Article from "./Article";
+import { Route, Switch, Link } from "react-router-dom";
+import universal from "react-universal-component";
+
+const UniversalComponent = universal(props => import(`./${props.page}`));
 
 class Routes extends Component {
   render() {
@@ -13,9 +13,17 @@ class Routes extends Component {
           <Link to="/about">About</Link>
           <Link to="/article">Article</Link>
         </div>
-        <Route exact path="/" component={Gallery} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/article" component={Article} />
+        <Switch>
+          <Route exact path="/">
+            <UniversalComponent page="Gallery" />
+          </Route>
+          <Route exact path="/about">
+            <UniversalComponent page="About" />
+          </Route>
+          <Route exact path="/article">
+            <UniversalComponent page="Article" />
+          </Route>
+        </Switch>
       </div>
     );
   }

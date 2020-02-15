@@ -1,11 +1,11 @@
 /* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
+const ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
 
 module.exports = {
   name: "client",
@@ -39,7 +39,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: MiniCSSExtractPlugin.loader },
+          { loader: ExtractCssChunks.loader },
           {
             loader: "css-loader"
           }
@@ -48,7 +48,7 @@ module.exports = {
       {
         test: /\.sass$/,
         use: [
-          { loader: MiniCSSExtractPlugin.loader },
+          { loader: ExtractCssChunks.loader },
           {
             loader: "css-loader",
             options: {
@@ -118,7 +118,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new MiniCSSExtractPlugin(),
+    new ExtractCssChunks(),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.css$/g,
       cssProcessor: require("cssnano"),

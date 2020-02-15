@@ -6,6 +6,7 @@
     "@babel/plugin-transform-runtime",
     "@babel/plugin-transform-async-to-generator",
     "@babel/plugin-transform-object-assign",
-    "@babel/plugin-transform-react-jsx"
+    "@babel/plugin-transform-react-jsx",
+    "babel-plugin-universal-import"
   ]
 }

@@ -1,7 +1,7 @@
 /* eslint-disable */
 const path = require("path");
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractCssChunks = require("extract-css-chunks-webpack-plugin");
 
 module.exports = {
   name: "client",
@@ -52,12 +52,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: {
+        use: [
+          {
+            loader: ExtractCssChunks.loader
+          },
+          {
             loader: "css-loader"
           }
-        })
+        ]
       },
       {
         test: /\.sass$/,
@@ -132,7 +134,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("[name].css"),
+    new ExtractCssChunks({ hot: true }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("development"),

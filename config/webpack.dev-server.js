@@ -1,16 +1,16 @@
 const path = require("path");
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-var nodeExternals = require("webpack-node-externals");
+const externals = require("./node-externals");
 
 module.exports = {
   name: "server",
   target: "node",
-  externals: nodeExternals(),
+  externals,
   entry: "./src/server/render.js",
   mode: "development",
   output: {
     filename: "dev-server-bundle.js",
+    chunkFilename: "[name].js",
     path: path.resolve(__dirname, "../build"),
     libraryTarget: "commonjs2"
   },
@@ -27,12 +27,9 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: {
-            loader: "css-loader"
-          }
-        })
+        use: {
+          loader: "css-loader"
+        }
       },
       {
         test: /\.jpg$/,
@@ -57,7 +54,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("[name].css"),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1
+    }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("development")
