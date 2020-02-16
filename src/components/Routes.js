@@ -12,8 +12,10 @@ class Routes extends Component {
         <div className="nav">
           <Link to="/">Gallery</Link>
           <Link to="/about">About</Link>
-          <Link to="/article/post">Article1</Link>
-          <Link to="/article/post2">Article2</Link>
+          <Link to="/article/post">Article 1</Link>
+          <Link to="/article/post2">Article 2</Link>
+          <Link to="/draft/post">Draft 1</Link>
+          <Link to="/draft/post2">Draft 2</Link>
         </div>
         <Switch>
           <Route
@@ -47,6 +49,22 @@ class Routes extends Component {
                 : location.hostname.split(".")[0];
               return (
                 <UniversalComponent page="Article" site={site} match={match} />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/draft/:slug"
+            render={({ staticContext, match }) => {
+              const site = staticContext
+                ? staticContext.site
+                : location.hostname.split(".")[0];
+              return (
+                <UniversalComponent
+                  page="DraftArticle"
+                  site={site}
+                  match={match}
+                />
               );
             }}
           />
