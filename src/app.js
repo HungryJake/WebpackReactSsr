@@ -19,9 +19,6 @@ function render() {
     document.getElementById("app")
   );
 }
-
-store.dispatch(actionTest("Hahah"));
-
 render(AppRoot);
 
 if (module.hot) {
