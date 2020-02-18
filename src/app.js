@@ -1,19 +1,17 @@
-/* eslint-disable */
 import { AppContainer } from "react-hot-loader";
 import React from "react";
 import ReactDOM from "react-dom";
 import AppRoot from "./components/AppRoot";
 import { Provider } from "react-redux";
 import configureStore from "./store";
-import { actionTest } from "./actions";
 
 const store = configureStore(window.INITIAL_STATE);
 
-function render() {
+function render(Component) {
   ReactDOM.hydrate(
     <Provider store={store}>
       <AppContainer>
-        <AppRoot />
+        <Component />
       </AppContainer>
     </Provider>,
     document.getElementById("app")
